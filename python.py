@@ -1,33 +1,73 @@
+
 from manim import *
+import numpy as np
 
-class QuadraticGraph(Scene):
+class AMGMProof(Scene):
     def construct(self):
-        # 創建坐標軸
-        axes = Axes(
-            x_range=[-5, 5, 1],  # x 軸範圍
-            y_range=[-5, 25, 5], # y 軸範圍
-            axis_config={"include_numbers": True}
+        # 1. Setup Parameters (a=4, b=1)
+        a_val, b_val = 4, 1
+        r = (a_val + b_val) / 2
+        
+        # Draw Semicircle and Diameter
+        diameter = Line(LEFT * r, RIGHT * r, color=WHITE)
+        semicircle = Arc(radius=r, start_angle=0, angle=PI, color=YELLOW)
+        
+        # 2. Geometric points
+        split_x = -r + a_val
+        split_point = [split_x, 0, 0]
+        
+        # Height of the altitude (GM)
+        h_val = np.sqrt(a_val * b_val)
+        top_curr = [split_x, h_val, 0]
+        
+        # Triangle and Altitude
+        triangle = Polygon(
+            diameter.get_start(), 
+            top_curr,             
+            diameter.get_end(),   
+            color=BLUE
         )
-        labels = axes.get_axis_labels(x_label="x", y_label="f(x)")
+        altitude = Line(split_point, top_curr, color=GREEN)
+        
+        # Labels using only MathTex
+        gm_label = MathTex(r"\sqrt{ab}", color=GREEN).next_to(altitude, RIGHT, buff=0.1)
+        am_radius = Line(ORIGIN, UP * r, color=RED)
+        am_label = MathTex(r"\frac{a+b}{2}", color=RED).next_to(am_radius, LEFT, buff=0.1)
 
-        # 定義二次函數
-        quadratic = axes.plot(lambda x: x**2, color=BLUE, x_range=[-5, 5])
+        # --- Animation Sequence ---
+        
+        # Step 1: Create Circle and Triangle
+        self.play(Create(diameter), Create(semicircle))
+        self.play(Create(triangle))
+        self.play(Create(altitude), Write(gm_label))
+        self.wait(1)
 
-        # 添加標籤
-        quadratic_label = axes.get_graph_label(quadratic, label="x^2")
+        # Step 2: Show the Radius (Arithmetic Mean)
+        self.play(Create(am_radius), Write(am_label))
+        self.wait(1)
 
-        # 動畫效果：繪製函數
-        self.play(Create(axes), Write(labels))
-        self.play(Create(quadratic), Write(quadratic_label))
+        # Step 3: Transform to Isosceles (a=b)
+        new_top = [0, r, 0]
+        new_triangle = Polygon(
+            diameter.get_start(),
+            new_top,
+            diameter.get_end(),
+            color=BLUE
+        )
+        new_altitude = Line(ORIGIN, new_top, color=GREEN)
+
+        self.play(
+            Transform(triangle, new_triangle),
+            Transform(altitude, new_altitude),
+            gm_label.animate.next_to(new_top, RIGHT),
+            run_time=2
+        )
+        
+        # Step 4: Final Inequality
+        final_formula = MathTex(r"\frac{a+b}{2} \ge \sqrt{ab}", color=YELLOW).to_edge(UP)
+        self.play(Write(final_formula))
+        self.play(Indicate(final_formula))
         self.wait(2)
-
-        # 動畫效果：改變函數形狀
-        new_quadratic = axes.plot(lambda x: 0.5 * x**2, color=GREEN, x_range=[-5, 5])
-        new_label = axes.get_graph_label(new_quadratic, label="0.5x^2")
-
-        self.play(Transform(quadratic, new_quadratic), Transform(quadratic_label, new_label))
-        self.wait(2)
-
 # Entry point
 if __name__ == "__main__":
     import os
