@@ -30,8 +30,6 @@ uv shell
 
 ## 📂 專案結構
 
-* **`main.py`**: 專案入口點，包含 `main()` 函式。
-* **`pyproject.toml`**: 定義專案元數據，名稱為 `gvftyfyj`，版本為 `0.1.0`。
 * **`.python-version`**: 指定開發環境使用的 Python 版本為 `3.13` 。
 
 
