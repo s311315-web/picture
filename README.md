@@ -19,20 +19,6 @@
 使用 `uv` 自動建立虛擬環境並執行主程式 ：
 
 
-```bash
-uv run main.py
-
-```
-
-
-*執行後將輸出：`Hello from gvftyfyj!*`
-2. **新增依賴**:
-若需要加入新的套件（例如 `httpx`），請執行：
-```bash
-uv add httpx
-
-```
-
 
 3. **開發者介面**:
 若需進入專屬的虛擬環境 shell：
