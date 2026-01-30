@@ -2,7 +2,7 @@
 
 # gvftyfyj
 使用manim 0.19.2製作動畫
-`在terminal輸入python python.py執行
+，在terminal輸入python python.py執行
 
 ## 🛠 開發環境
 
