@@ -1,6 +1,6 @@
 
 
-# gvftyfyj
+# 算幾不等式
 使用manim 0.19.2製作動畫
 ，在terminal輸入python python.py執行，證明算幾不等式
 
